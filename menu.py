@@ -4,6 +4,7 @@ import time
 import ctypes
 import colorama
 from colorama import Fore, Back, Style, init
+import shutil
 
 
 init(autoreset=True) 
@@ -13,7 +14,7 @@ def clear_screen():
      os.system('cls' if os.name == 'nt' else 'clear')
     
 def logo():
-    print(Fore.GREEN + Back.BLACK +"""         
+    print(Fore.RED+"""
   ⠤⣤⣤⣤⣄⣀⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣠⣤⠤⠤⠴⠶⠶⠶⠶
 ⢠⣤⣤⡄⣤⣤⣤⠄⣀⠉⣉⣙⠒⠤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠴⠘⣉⢡⣤⡤⠐⣶⡆⢶⠀⣶⣶⡦
 ⣄⢻⣿⣧⠻⠇⠋⠀⠋⠀⢘⣿⢳⣦⣌⠳⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠞⣡⣴⣧⠻⣄⢸⣿⣿⡟⢁⡻⣸⣿⡿⠁
@@ -30,6 +31,7 @@ def logo():
         by: https://github.com/FelpsCodee
     """)
     
+   
     
 opcoes = {
     1: "Otimização de memória RAM iniciada...",
@@ -44,8 +46,6 @@ opcoes = {
     10: "Otimização de sistema de arquivos iniciada...",
     11: "Saindo do painel Fsociety..."
 }
-
-
 
 
 logo()
@@ -69,7 +69,10 @@ while True:
             
             clear_screen()
             print(Fore.GREEN + Style.BRIGHT + mensagem)
-            break
+            if mensagem == opcoes[1]:
+                
+                
+                
         else:
             clear_screen()
             logo()
