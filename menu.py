@@ -5,6 +5,7 @@ import ctypes
 import colorama
 from colorama import Fore, Back, Style, init
 import shutil
+import functions
 
 
 init(autoreset=True) 
@@ -48,16 +49,18 @@ opcoes = {
 }
 
 
+def inicio():
+    for numero, texto in opcoes.items():
+        descricao_menu = texto.split("iniciada...")[0].replace("Saindo d", "Sair d")
+        print(f"\t{Fore.CYAN}{numero} {Style.RESET_ALL}- {descricao_menu}")
 logo()
-print("  ----------Bem vindo ao painel Fsociety!----------\n")
+inicio()
+print("  ----------Bem vindo ao painel otimizador!----------\n")
 print("  Escolha uma das opções de otimização abaixo: \n")
 
 # Usa o loop para mostrar o menu de forma automática
 print("\nSão apenas", len(opcoes) - 1, "opções de otimização.")
 
-for numero, texto in opcoes.items():
-    descricao_menu = texto.split("iniciada...")[0].replace("Saindo d", "Sair d")
-    print(f"\t{Fore.CYAN}{numero} {Style.RESET_ALL}- {descricao_menu}")
 
 while True:
     try:
@@ -69,8 +72,10 @@ while True:
             
             clear_screen()
             print(Fore.GREEN + Style.BRIGHT + mensagem)
+            functions.loading()
             if mensagem == opcoes[1]:
                 
+                ...
                 
                 
         else:
