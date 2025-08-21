@@ -10,10 +10,17 @@ import functions
 
 init(autoreset=True) 
 
+def mostrar_painel():
+    clear_screen()
+    logo()
+    print("  ----------Bem vindo ao painel otimizador!----------\n")
+    print("  Escolha uma das opções de otimização abaixo: \n")
+    for nome , valor in opcoes.items():
+        print(f"  [{nome}]: {valor}")
+    
 
 def clear_screen():
      os.system('cls' if os.name == 'nt' else 'clear')
-    
 def logo():
     print(Fore.RED+"""
   ⠤⣤⣤⣤⣄⣀⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣠⣤⠤⠤⠴⠶⠶⠶⠶
@@ -32,60 +39,55 @@ def logo():
         by: https://github.com/FelpsCodee
     """)
     
-   
+acoes = {
+    # 1: functions.otimizar_ram,
+    10: functions.limpar_pasta_temp,
+    # 3: functions.otimizar_disco,
+    # ... etc ...
+   }
     
 opcoes = {
-    1: "Otimização de memória RAM iniciada...",
-    2: "Otimização de CPU iniciada...",
-    3: "Otimização de disco iniciada...",
-    4: "Otimização de rede iniciada...",
-    5: "Otimização de GPU iniciada...",
-    6: "Otimização de energia iniciada...",
-    7: "Otimização de processos iniciada...",
-    8: "Otimização de serviços iniciada...",
-    9: "Otimização de arquivos iniciada...",
-    10: "Otimização de sistema de arquivos iniciada...",
-    11: "Saindo do painel Fsociety..."
+    1: "Otimização de memória ",
+    2: "Otimização de CPU ",
+    3: "Otimização de disco ",
+    4: "Otimização de rede ",
+    5: "Otimização de GPU ",
+    6: "Otimização de energia ",
+    7: "Otimização de processos ",
+    8: "Otimização de serviços ",
+    9: "Otimização de arquivos ",
+    10: "Otimização de sistema",
+    11: "Sair do Painel."
 }
 
-
-def inicio():
-    for numero, texto in opcoes.items():
-        descricao_menu = texto.split("iniciada...")[0].replace("Saindo d", "Sair d")
-        print(f"\t{Fore.CYAN}{numero} {Style.RESET_ALL}- {descricao_menu}")
-logo()
-inicio()
-print("  ----------Bem vindo ao painel otimizador!----------\n")
-print("  Escolha uma das opções de otimização abaixo: \n")
-
-# Usa o loop para mostrar o menu de forma automática
-print("\nSão apenas", len(opcoes) - 1, "opções de otimização.")
-
-
 while True:
+    mostrar_painel()
+    
     try:
         choice = int(input("Digite a opcao de escolha: "))
+      
+        funcao_a_executar = acoes.get(choice)
             
-        mensagem = opcoes.get(choice)
+        if funcao_a_executar:
         
-        if mensagem:
+            funcao_a_executar()
+            input(f"\n{Fore.YELLOW}Otimização concluída. Pressione Enter para voltar ao menu...")
+            continue
             
-            clear_screen()
-            print(Fore.GREEN + Style.BRIGHT + mensagem)
-            functions.loading()
-            if mensagem == opcoes[1]:
-                
-                ...
-                
-                
-        else:
+        elif choice == 11:
             clear_screen()
             logo()
-            print(Fore.RED + Style.BRIGHT +"Escolha inválida! escolha novamente")
-            
-            
-    except ValueError:
+            print(Fore.YELLOW + "Saindo do painel de otimizacao")
+            time.sleep(1)
+            clear_screen()
+            break 
         
-        clear_screen()
-        logo()
-        print(Fore.RED + Style.BRIGHT +"Digite apenas numeros! De 1 a 11.")
+        else:
+            print(Fore.RED + Style.BRIGHT + f"Opção '{choice}' inválida ou ainda não implementada!")
+            time.sleep(2) 
+            continue
+    
+    except ValueError:
+        print(Fore.RED + Style.BRIGHT + "Entrada inválida! Digite apenas números.")
+        time.sleep(2) #
+        continue
