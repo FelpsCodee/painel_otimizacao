@@ -13,7 +13,7 @@ init(autoreset=True)
 def mostrar_painel():
     clear_screen()
     logo()
-    print("  ----------Bem vindo ao painel otimizador!----------\n")
+    print("  ----------BEM VINDO AO PAINEL OTIMIZADOR!----------\n")
     print("  Escolha uma das opções de otimização abaixo: \n")
     for nome , valor in opcoes.items():
         print(f"  [{nome}]: {valor}")
@@ -67,7 +67,6 @@ while True:
         choice = int(input("Digite a opcao de escolha: "))
       
         funcao_a_executar = acoes.get(choice)
-            
         if funcao_a_executar:
         
             funcao_a_executar()
@@ -89,5 +88,5 @@ while True:
     
     except ValueError:
         print(Fore.RED + Style.BRIGHT + "Entrada inválida! Digite apenas números.")
-        time.sleep(2) #
+        time.sleep(2) 
         continue
