@@ -6,6 +6,8 @@ import colorama
 from colorama import Fore, Back, Style, init
 import shutil
 import functions
+import subprocess
+
 
 
 init(autoreset=True) 
@@ -40,24 +42,27 @@ def logo():
     """)
     
 acoes = {
-    # 1: functions.otimizar_ram,
+    1: functions.otimizar_ram,
+    2: functions.ativar_modo_desempenho,
     10: functions.limpar_pasta_temp,
+    11: functions.verificar_plano_energia
     # 3: functions.otimizar_disco,
     # ... etc ...
    }
     
 opcoes = {
     1: "Otimização de memória ",
-    2: "Otimização de CPU ",
-    3: "Otimização de disco ",
-    4: "Otimização de rede ",
-    5: "Otimização de GPU ",
-    6: "Otimização de energia ",
-    7: "Otimização de processos ",
-    8: "Otimização de serviços ",
-    9: "Otimização de arquivos ",
-    10: "Otimização de sistema",
-    11: "Sair do Painel."
+    2: "Ativar Modo Desempenho Máximo ",
+    3: "Limpeza de Disco Avançada  ",
+    4: "Reparar Conexão de Rede ",
+    5: "Otimizar Inicialização do Sistema ",
+    6: "Verificar Integridade do Windows ",
+    7: "Finalizador de Tarefas por Nome ",
+    8: "Limpeza do Cache de Atualizações do Windows ",
+    9: "Analisador de Espaço em Disco ",
+    10:"Limpar Pasta de Arquivos Temporários",
+    11:"Verificar Plano de Energia",
+    12:"Sair do Painel."
 }
 
 while True:
@@ -73,7 +78,7 @@ while True:
             input(f"\n{Fore.YELLOW}Otimização concluída. Pressione Enter para voltar ao menu...")
             continue
             
-        elif choice == 11:
+        elif choice == 12:
             clear_screen()
             logo()
             print(Fore.YELLOW + "Saindo do painel de otimizacao")
