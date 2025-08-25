@@ -23,8 +23,7 @@ def limpar_tela():
 def loading():
     for i in tqdm(range(100), desc="Otimizando Sistema"):
         time.sleep(0.0001)
-        
-        
+         
     
     #FUNÇÃO 1   
 def otimizar_ram():
@@ -108,42 +107,69 @@ def limpeza_disco():
         print(f"{Fore.YELLOW}Isso pode exigir que o script seja executado como Administrador.{Style.RESET_ALL}")
     
     print(f"{Fore.GREEN}\nLimpeza de Disco Avançada concluída. {Style.RESET_ALL}")
-        
-
-
-    #FUNÇÃO 11
-def verificar_plano_energia():
-    limpar_tela() 
-        
-
-    print(f"\n{Style.BRIGHT}Verificando plano de energia ativo...{Style.RESET_ALL}")
-    time.sleep(0.5)
-    print(f"\n{Style.BRIGHT}Verificando ajustes....{Style.RESET_ALL}")
-    time.sleep(1)
-    try:
-        comando = ["powercfg", "/getactivescheme"]
-        
-        resultado = subprocess.run(comando, capture_output=True,text=True, check= True)
-        
-        saida_do_texto = resultado.stdout
-        
-        if GUID_ALTO_DESEMPENHO in saida_do_texto:
-            print(f"Status: {Fore.GREEN}MODO ALTO DESEMPENHO ATIVADO{Style.RESET_ALL}")
-
-        elif GUID_EQUILIBRADO in saida_do_texto:
-            print(f"Status: {Fore.YELLOW}Modo Equilibrado ativado.{Style.RESET_ALL}")
-            
-        elif GUID_ECONOMIA in saida_do_texto:
-            print(f"Status: {Fore.YELLOW}Modo Economia ativado.{Style.RESET_ALL}")
-            
-        else:
-            print(f"Status: {Fore.CYAN}Outro plano de energia está ativo.{Style.RESET_ALL}")
     
-    except (FileNotFoundError, subprocess.CalledProcessError) as e:
-         print(f"{Fore.RED}Não foi possível verificar o plano de energia. Erro: {e}{Style.RESET_ALL}")
-         print(f"{Fore.YELLOW}Isso pode acontecer se o script não for executado como Administrador.{Style.RESET_ALL}")
+    
+    
+    #FUNÇÃO 4
+    
+def conexao_rede():
+    
+    if os.name != 'nt': 
+        print(f"{Fore.RED}ERRO: Esta função só é compatível com o Windows.{Style.RESET_ALL}")
+        time.sleep(3)
+        return
+    
+    comando_1 = ["ipconfig /release"]
+    comando_2 = ["ipconfig /renew"]
+    comando_3 = ["ipconfig", "/flushdns"]
+    comando_4 = ["ping", "8.8.8.8"]
+    limpar_tela()
 
+    print(" Escolha uma opção\n")
+    print(" [1] Renovar o Endereço IP")
+    print(" [2] Limpar o Cache DNS ")
+    print(" [3] Testar a Conexão\n ")
+        
+    escolher = int(input("DIGITE AQUI!: "))
+        
+    if escolher == 1:
+        try:
+            subprocess.run( comando_1,capture_output=True,text=True, check=True)
+            print("você devolveu o seu IP ao roteador!")
+            time.sleep(1)
+            print("agora ele te dará um IP novo ou o mesmo.")
+            subprocess.run(comando_2,capture_output=True,text=True, check=True)
+            time.sleep(1)
+            print("\nProntinho IP renovado!")
+            
+        except Exception as e:
+            print(f"\nocorreu um erro ao Renovar IP! | ERRO [{e}] ")
+            print("Dica: Execute o painel como Administrador.")
+    
+    elif escolher == 2:
+        try:
+            print("Limpando seu Cache DNS!")
+            subprocess.run(comando_3,capture_output=True,text=True, check=True)
+            print("\nCache DNS Limpo!")
+            
+        except Exception as e:
+            print(f"\nHouve um erro ao tentar limpeza do Cache DNS! | ERRO: [{e}]")
+            
+    elif escolher == 3:
+        try:
+            print("Testando sua Conexão...")
+            subprocess.run(comando_4, capture_output=True,text=True, check=True)
+            print("Conexão Testada e sem nenhum problema!!!")
+        
+        except Exception as e:
+            print(f"\nocorreu um erro ao Testar conexão! | ERRO [{e}] ")
+            print("Dica: Execute o painel como Administrador.")
+    else:
+        print(f"\n{Fore.RED}ERRO: Opção inválida. Escolha 1, 2 ou 3.{Style.RESET_ALL}")
+            
+                  
     #FUNÇÃO 10
+
 def limpar_pasta_temp():
     
     arquivos_apagados = 0
@@ -189,3 +215,35 @@ def limpar_pasta_temp():
     print(f"\n{Fore.CYAN} {arquivos_apagados} - Arquivo(s) apagado(s) com sucesso ")
     print(f"\n {Fore.CYAN}{pastas_apagadas} - Pasta(s) apagada(s) com sucesso ")
     print(f"\n {Fore.RED}{erros} Pastas e arquivos que não foram possiveis deletar ")
+
+    #FUNÇÃO 11
+def verificar_plano_energia():
+    limpar_tela() 
+        
+
+    print(f"\n{Style.BRIGHT}Verificando plano de energia ativo...{Style.RESET_ALL}")
+    time.sleep(0.5)
+    print(f"\n{Style.BRIGHT}Verificando ajustes....{Style.RESET_ALL}")
+    time.sleep(1)
+    try:
+        comando = ["powercfg", "/getactivescheme"]
+        
+        resultado = subprocess.run(comando, capture_output=True,text=True, check= True)
+        
+        saida_do_texto = resultado.stdout
+        
+        if GUID_ALTO_DESEMPENHO in saida_do_texto:
+            print(f"Status: {Fore.GREEN}MODO ALTO DESEMPENHO ATIVADO{Style.RESET_ALL}")
+
+        elif GUID_EQUILIBRADO in saida_do_texto:
+            print(f"Status: {Fore.YELLOW}Modo Equilibrado ativado.{Style.RESET_ALL}")
+            
+        elif GUID_ECONOMIA in saida_do_texto:
+            print(f"Status: {Fore.YELLOW}Modo Economia ativado.{Style.RESET_ALL}")
+            
+        else:
+            print(f"Status: {Fore.CYAN}Outro plano de energia está ativo.{Style.RESET_ALL}")
+    
+    except (FileNotFoundError, subprocess.CalledProcessError) as e:
+         print(f"{Fore.RED}Não foi possível verificar o plano de energia. Erro: {e}{Style.RESET_ALL}")
+         print(f"{Fore.YELLOW}Isso pode acontecer se o script não for executado como Administrador.{Style.RESET_ALL}")
