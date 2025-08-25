@@ -10,6 +10,12 @@ import subprocess
 
 
 
+if not functions.is_admin():
+    print("ERRO: Este painel precisa ser executado como Administrador.")
+    print("Por favor, abra um novo CMD como Administrador e execute o script novamente.")
+    input("\nPressione Enter para sair.")
+    sys.exit() # Encerra o programa
+
 init(autoreset=True) 
 
 def mostrar_painel():
@@ -44,6 +50,7 @@ def logo():
 acoes = {
     1: functions.otimizar_ram,
     2: functions.ativar_modo_desempenho,
+    3: functions.limpeza_disco,
     10: functions.limpar_pasta_temp,
     11: functions.verificar_plano_energia
     # 3: functions.otimizar_disco,

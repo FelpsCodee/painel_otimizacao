@@ -7,7 +7,15 @@ import time
 import subprocess
 import tempfile
 import psutil
+import ctypes
+import winshell
 
+def is_admin():
+    """Verifica se o script está rodando em modo administrador."""
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
 
 def limpar_tela():
      os.system('cls' if os.name == 'nt' else 'clear')
@@ -36,43 +44,77 @@ def otimizar_ram():
          
             pass
 
-            
+GUID_ALTO_DESEMPENHO = "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"
+GUID_EQUILIBRADO = "381b4222-f694-41f0-9685-ff5bb260df2e"
+GUID_ECONOMIA = "a1841308-3541-4fab-bc81-f71556f20b4a"
+
+     
+        #FUNÇÃO 2
 def ativar_modo_desempenho():
-    GUID_ALTO_DESEMPENHO = "powercfg", "/setactive", "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"
-    GUID_EQUILIBRADO = "powercfg", "/setactive", "381b4222-f694-41f0-9685-ff5bb260df2e"
-    GUID_ECONOMIA = "powercfg", "/setactive", "a1841308-3541-4fab-bc81-f71556f20b4a"
-    
+
     limpar_tela()
     print("Bem vindo a Alteração de Modo de Energia!")
     time.sleep(1)
+    print("\n[1] - Alto Desempenho")
+    print("[2] - Equilibrado")
+    print("[3] - Economia de Energia")
+    print("[4] - voltar para o menu Principal\n")
+    print("Para verificar em que plano de energia seu computador está, experimente a opção 11!\n")
+    
     choice = int(input("Escolha o modo de energia que vc deseja: "))
     if choice == 1:
-        os.system(GUID_ALTO_DESEMPENHO)
-        print("Modo Desempenho Ativado!")
+        os.system(f"powercfg /setactive {GUID_ALTO_DESEMPENHO}")
+        print(Fore.GREEN + "Modo Desempenho Ativado!")
         
     elif choice == 2:
-        os.system(GUID_EQUILIBRADO)
-        print("Modo Equilibrado Ativado!")
+        os.system(f"powercfg /setactive {GUID_EQUILIBRADO}")
+        print(Fore.YELLOW +"Modo Equilibrado Ativado!") 
     
     elif choice == 3:
-        os.system(GUID_ECONOMIA)
-        print("Modo economia Ativado!")
+        os.system(f"powercfg /setactive {GUID_ECONOMIA}")
+        print(Fore.RED +"Modo economia Ativado!")
+    
+    elif choice == 4:
+        limpar_tela()
+        print("")
         
     else:
         print("Numero Invalido")
-    
         
+        
+        #FUNÇÃO 3
+def limpeza_disco():
+    limpar_tela()   
+    print("Começando a limpeza de Disco Avançada")
     
+    print(Fore.MAGENTA +"\n--- Etapa 1: Limpando Arquivos Temporários ---")
+    limpar_pasta_temp()
+    time.sleep(2)
+    limpar_tela()
+    print(Fore.MAGENTA + "\n------ Etapa 2: Esvaziando lixeira------\n")
+    try:
+        winshell.recycle_bin().empty(confirm=False, show_progress=False, sound=False)
+        print(f"{Fore.GREEN}Limpando a sujeira..{Style.RESET_ALL}")
+        time.sleep(1)
+        print(f"{Fore.GREEN}juntando o lixo...{Style.RESET_ALL}")
+        time.sleep(1)
+        print(f"{Fore.GREEN}Jogando o lixo fora....{Style.RESET_ALL}")
+        time.sleep(1)
+        print(f"{Fore.GREEN}SUCESSO LIXEIRA ESVAZIADA COM SUCESSO.{Style.RESET_ALL}")
+        
+    except Exception as e:
+    
+        print(f"{Fore.RED}ERRO ao esvaziar a lixeira: {e}{Style.RESET_ALL}")
+        print(f"{Fore.YELLOW}Isso pode exigir que o script seja executado como Administrador.{Style.RESET_ALL}")
+    
+    print(f"{Fore.GREEN}\nLimpeza de Disco Avançada concluída. {Style.RESET_ALL}")
         
 
-        
+
     #FUNÇÃO 11
 def verificar_plano_energia():
     limpar_tela() 
         
-    GUID_ALTO_DESEMPENHO = "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"
-    GUID_EQUILIBRADO = "381b4222-f694-41f0-9685-ff5bb260df2e"
-    GUID_ECONOMIA = "a1841308-3541-4fab-bc81-f71556f20b4a"
 
     print(f"\n{Style.BRIGHT}Verificando plano de energia ativo...{Style.RESET_ALL}")
     time.sleep(0.5)
