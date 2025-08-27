@@ -125,10 +125,11 @@ def conexao_rede():
     comando_4 = ["ping", "8.8.8.8"]
     limpar_tela()
 
-    print(" Escolha uma opção\n")
+    print(Fore.GREEN +" Escolha uma opção\n")
     print(" [1] Renovar o Endereço IP")
     print(" [2] Limpar o Cache DNS ")
-    print(" [3] Testar a Conexão\n ")
+    print(" [3] Testar a Conexão ")
+    print(" [4]  voltar...\n")
         
     escolher = int(input("DIGITE AQUI!: "))
         
@@ -164,9 +165,29 @@ def conexao_rede():
         except Exception as e:
             print(f"\nocorreu um erro ao Testar conexão! | ERRO [{e}] ")
             print("Dica: Execute o painel como Administrador.")
-    else:
-        print(f"\n{Fore.RED}ERRO: Opção inválida. Escolha 1, 2 ou 3.{Style.RESET_ALL}")
             
+    elif escolher == 4:
+        print("")
+        
+                
+    else:
+        print(f"\n{Fore.RED}ERRO: Opção inválida. Escolha 1, 2, 3 ou 4.{Style.RESET_ALL}") 
+            
+    
+    #FUNÇÃO 7
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
                   
     #FUNÇÃO 10
 
