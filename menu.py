@@ -60,9 +60,9 @@ acoes = {
     2: functions.ativar_modo_desempenho,
     3: functions.limpeza_disco,
     4: functions.conexao_rede,
+    7: functions.finalizar_tarefa,
     10: functions.limpar_pasta_temp,
     11: functions.verificar_plano_energia
-    # 3: functions.otimizar_disco,
     # ... etc ...
    }
     

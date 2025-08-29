@@ -9,6 +9,7 @@ import tempfile
 import psutil
 import ctypes
 import winshell
+import itertools
 
 def is_admin():
     """Verifica se o script está rodando em modo administrador."""
@@ -103,7 +104,7 @@ def limpeza_disco():
         
     except Exception as e:
     
-        print(f"{Fore.RED}ERRO ao esvaziar a lixeira: {e}{Style.RESET_ALL}")
+        print(f"{Fore.RED}ERRO ao esvaziar a lixeira: {e} sua lixeira já pode estar vazia. {Style.RESET_ALL}")
         print(f"{Fore.YELLOW}Isso pode exigir que o script seja executado como Administrador.{Style.RESET_ALL}")
     
     print(f"{Fore.GREEN}\nLimpeza de Disco Avançada concluída. {Style.RESET_ALL}")
@@ -125,11 +126,10 @@ def conexao_rede():
     comando_4 = ["ping", "8.8.8.8"]
     limpar_tela()
 
-    print(Fore.GREEN +" Escolha uma opção\n")
+    print(" Escolha uma opção\n")
     print(" [1] Renovar o Endereço IP")
     print(" [2] Limpar o Cache DNS ")
-    print(" [3] Testar a Conexão ")
-    print(" [4]  voltar...\n")
+    print(" [3] Testar a Conexão\n ")
         
     escolher = int(input("DIGITE AQUI!: "))
         
@@ -165,29 +165,80 @@ def conexao_rede():
         except Exception as e:
             print(f"\nocorreu um erro ao Testar conexão! | ERRO [{e}] ")
             print("Dica: Execute o painel como Administrador.")
-            
-    elif escolher == 4:
-        print("")
-        
-                
     else:
-        print(f"\n{Fore.RED}ERRO: Opção inválida. Escolha 1, 2, 3 ou 4.{Style.RESET_ALL}") 
+        print(f"\n{Fore.RED}ERRO: Opção inválida. Escolha 1, 2 ou 3.{Style.RESET_ALL}")
             
+def visualizar_colunas():
+ ...
+
+    #FUNÇÃO 7  
+def finalizar_tarefa():
     
-    #FUNÇÃO 7
+
+    limite_atencao = 100
+    limite_critico = 500
+    limpar_tela()
+    processos_apagados = 0
+    processos_nao_apagados = 0
+    print(Fore.GREEN + "Iniciando Finalizador de Tarefas...")
+    time.sleep(1)
+    while True:
+        escolha = input("\nDeseja visualizar os processos ativos antes de finalizar um? [s/n]: ").lower()
+        
+        if escolha in ["s", "n"]:
+            break   
+        
+        else:
+            print(f"{Fore.RED}Opção inválida. Por favor, digite apenas 's' para sim ou 'n' para não.{Style.RESET_ALL}")
+            
+        
+    if escolha == 's':
+            print("\nExibindo processos...")
+            
+            for i in psutil.process_iter(['pid', 'name', 'memory_info']):
+                try:
+                    processos = i.info['name']
+                    info_memoria = i.info['memory_info']
+                    memoria_usada_mb = info_memoria.rss / (1024 * 1024)
+                    
+                    if memoria_usada_mb >= limite_critico:
+                        cor_status = Fore.RED
+                    elif memoria_usada_mb >= limite_atencao:
+                        cor_status = Fore.YELLOW
+                    else:
+                        cor_status = Fore.GREEN
+                    
+                    
+                    print(f'Processo Ativado: {Fore.CYAN +processos} {Fore.WHITE + "|"} {Fore.LIGHTBLUE_EX +"Memória Usada:"}{cor_status} {memoria_usada_mb:.2f} MB')
+                    print("\n" + "="*50)
+                except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                    pass
+
+                
+    print(f"{Fore.YELLOW +"CUIDADO! - "} {Fore.WHITE +"Não finalize processos que você não conheça"}\n")
+    nome_do_processo = input("Digite o nome do processo (com o '.exe' no final) que quer encerrar (ou deixe em branco para cancelar): ")
     
+    if not nome_do_processo:
+        print("\nOperação cancelada. Voltando ao menu principal.")
+        time.sleep(2)
+        return
+    print("\n" + "="*50)
     
+    for processo in psutil.process_iter(['pid', 'name']):
+        
+        if processo.info['name'].lower() == nome_do_processo.lower():
+            try:
+                processo.kill()
+                print(f"{Fore.GREEN}Processo '{processo.info['name']}' (PID: {processo.info['pid']}) finalizado com sucesso!{Style.RESET_ALL}")
+                processos_apagados += 1
+            except psutil.Error as e:
+                print(f"{Fore.RED}ERRO! Ocorreu um erro ao finalizar o processo '{processo.info['name']}' | {e}{Style.RESET_ALL}")
+                processos_nao_apagados += 1
     
+    print(f"\n{Fore.GREEN}{processos_apagados} - processo(s) finalizado(s).")
+    print(f"{Fore.RED}{processos_nao_apagados} - processo(s) não puderam ser finalizados (protegidos).")
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
                   
     #FUNÇÃO 10
 
@@ -222,7 +273,7 @@ def limpar_pasta_temp():
         try:
              if item.is_file() or item.is_symlink():
                  os.remove(item.path)
-                 time.sleep(0.5)
+                 time.sleep(0.2)
                  arquivos_apagados += 1
                  print(f"  {Fore.CYAN}Arquivo apagado:{Style.RESET_ALL} {item.name}")
              elif item.is_dir():
