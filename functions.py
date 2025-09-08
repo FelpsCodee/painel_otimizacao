@@ -27,6 +27,69 @@ def loading():
          
     
     #FUNÇÃO 1   
+def efeitos_visuais():
+    CODIGO_EFEITOS_VISUAIS = 0x103F
+    FLAG_SALVAR_PERFIL = 0x01
+    FLAG_AVISAR_SISTEMA = 0x02
+    
+    
+    limpar_tela()
+    print(Fore.GREEN +"Iniciando otimização dos efeitos visuais....")
+    time.sleep(2)
+    
+    limpar_tela()
+    while True:
+        print(Fore.GREEN +"""
+              
+                                                <---- Escolha uma das opções abaixo ------>
+                                                
+                                                ==========================================
+                                                | [1] - Habilitar animações              |
+                                                | [2] - Desabilitar animações            |
+                                                | [3] - Voltar                           |
+                                                ==========================================   
+              
+              
+              """)
+        escolha = None
+        
+        try:
+            escolha = int(input(Fore.CYAN + "Escolha uma opção: "))
+            
+        except ValueError:
+            
+            print("Erro: Por favor, digite apenas um número.")
+            continue
+        
+        if escolha == 1:
+            
+            try:
+                ctypes.windll.user32.SystemParametersInfow(CODIGO_EFEITOS_VISUAIS 1, None, FLAG_SALVAR_PERFIL | FLAG_AVISAR_SISTEMA)
+                print("animações habilitadas!")
+                
+            except Exception as e:
+                print(f"Houve um erro ao habilitar animações {e}")
+                
+        elif escolha == 2:
+            try:
+                ctypes.windll.user32.SystemParametersInfow(CODIGO_EFEITOS_VISUAIS, 0, None, FLAG_SALVAR_PERFIL | FLAG_AVISAR_SISTEMA)
+                print("Animações desabilitadas!")
+            except Exception as e:
+                print(f"Houve um erro ao desabilitar animações {e}")
+        
+        elif escolha == 3:
+            print("Voltando para o menu...")
+            time.sleep(0.7)
+            break
+        
+        else:
+            print("Digite apenas os números Válidos!")
+            continue
+                
+            
+        
+    
+    
         
         #FUNÇÃO 3
 def limpeza_disco():
