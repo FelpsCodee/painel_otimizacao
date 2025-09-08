@@ -27,87 +27,61 @@ def loading():
          
     
     #FUNÇÃO 1   
-def otimizar_ram():
-    limpar_tela()
-    processos_ordenados = sorted(psutil.process_iter(['pid', 'name', 'memory_info']),key=lambda p: p.info['memory_info'].rss, reverse=True)
-    
-    print("--- Top 5 Consumidores de Memória RAM ---")
-    for processo in processos_ordenados[:5]:
-        try:
-            memoria_usada_mb = processo.info['memory_info'].rss / (1024 * 1024)
-          
-            if memoria_usada_mb > 1:
-             
-                print(f"  Nome: {Fore.GREEN}{processo.info['name']:<30}{Style.RESET_ALL} | "
-                      f"Memória: {Fore.RED}{memoria_usada_mb:.2f} MB{Style.RESET_ALL}")
-        except psutil.Error:
-         
-            pass
-
-GUID_ALTO_DESEMPENHO = "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"
-GUID_EQUILIBRADO = "381b4222-f694-41f0-9685-ff5bb260df2e"
-GUID_ECONOMIA = "a1841308-3541-4fab-bc81-f71556f20b4a"
-
-     
-        #FUNÇÃO 2
-def ativar_modo_desempenho():
-
-    limpar_tela()
-    print("Bem vindo a Alteração de Modo de Energia!")
-    time.sleep(1)
-    print("\n[1] - Alto Desempenho")
-    print("[2] - Equilibrado")
-    print("[3] - Economia de Energia")
-    print("[4] - voltar para o menu Principal\n")
-    print("Para verificar em que plano de energia seu computador está, experimente a opção 11!\n")
-    
-    choice = int(input("Escolha o modo de energia que vc deseja: "))
-    if choice == 1:
-        os.system(f"powercfg /setactive {GUID_ALTO_DESEMPENHO}")
-        print(Fore.GREEN + "Modo Desempenho Ativado!")
-        
-    elif choice == 2:
-        os.system(f"powercfg /setactive {GUID_EQUILIBRADO}")
-        print(Fore.YELLOW +"Modo Equilibrado Ativado!") 
-    
-    elif choice == 3:
-        os.system(f"powercfg /setactive {GUID_ECONOMIA}")
-        print(Fore.RED +"Modo economia Ativado!")
-    
-    elif choice == 4:
-        limpar_tela()
-        print("")
-        
-    else:
-        print("Numero Invalido")
-        
         
         #FUNÇÃO 3
 def limpeza_disco():
     limpar_tela()   
     print("Começando a limpeza de Disco Avançada")
+    time.sleep(1)
     
-    print(Fore.MAGENTA +"\n--- Etapa 1: Limpando Arquivos Temporários ---")
-    limpar_pasta_temp()
-    time.sleep(2)
-    limpar_tela()
-    print(Fore.MAGENTA + "\n------ Etapa 2: Esvaziando lixeira------\n")
-    try:
-        winshell.recycle_bin().empty(confirm=False, show_progress=False, sound=False)
-        print(f"{Fore.GREEN}Limpando a sujeira..{Style.RESET_ALL}")
-        time.sleep(1)
-        print(f"{Fore.GREEN}juntando o lixo...{Style.RESET_ALL}")
-        time.sleep(1)
-        print(f"{Fore.GREEN}Jogando o lixo fora....{Style.RESET_ALL}")
-        time.sleep(1)
-        print(f"{Fore.GREEN}SUCESSO LIXEIRA ESVAZIADA COM SUCESSO.{Style.RESET_ALL}")
+    while True:
+        limpar_tela()
+        print(Fore.GREEN + """       
+                                                <---- Escolha uma das opções abaixo ------>
+                                                
+                                                ==========================================
+                                                | [1] - limpar pastas temps              |
+                                                | [2] - Esvaziar Lixeira automaticamente |
+                                                | [3] - Voltar                           |
+                                                ==========================================   
+                                                """)
         
-    except Exception as e:
-    
-        print(f"{Fore.RED}ERRO ao esvaziar a lixeira: {e} sua lixeira já pode estar vazia. {Style.RESET_ALL}")
-        print(f"{Fore.YELLOW}Isso pode exigir que o script seja executado como Administrador.{Style.RESET_ALL}")
-    
-    print(f"{Fore.GREEN}\nLimpeza de Disco Avançada concluída. {Style.RESET_ALL}")
+        escolha = int(input("Digite sua opção: "))
+        
+        if escolha == 1:
+            limpar_tela()
+            print(Fore.MAGENTA +"\n--- Etapa 1: Limpando Arquivos Temporários ---")
+            limpar_pasta_temp()
+            time.sleep(1)
+            input("Aperte Enter para voltar a escolha de Opções: ")
+        
+        elif escolha == 2:
+            
+            print(Fore.MAGENTA + "\n------ Etapa 2: Esvaziando lixeira------\n")
+            try:
+                winshell.recycle_bin().empty(confirm=False, show_progress=False, sound=False)
+                print(f"{Fore.GREEN}Limpando a sujeira..{Style.RESET_ALL}")
+                time.sleep(1)
+                print(f"{Fore.GREEN}juntando o lixo...{Style.RESET_ALL}")
+                time.sleep(1)
+                print(f"{Fore.GREEN}Jogando o lixo fora....{Style.RESET_ALL}")
+                time.sleep(1)
+                print(f"{Fore.GREEN}SUCESSO LIXEIRA ESVAZIADA COM SUCESSO.{Style.RESET_ALL}\n")
+                input("Aperte Enter para voltar a escolha de Opções: ")
+                
+            except Exception as e:
+                time.sleep(1)
+                print(f"{Fore.RED}ERRO ao esvaziar a lixeira: sua lixeira já pode estar vazia. {Style.RESET_ALL}\n")
+                print(f"{Fore.YELLOW}Isso pode exigir que o script seja executado como Administrador.{Style.RESET_ALL}\n")
+                input("Aperte Enter para voltar a escolha de Opções: ")
+        elif escolha == 3:
+            print(Fore.CYAN + "\nVoltando...")
+            print(f"{Fore.GREEN}\nFim da Limpeza Avançada {Style.RESET_ALL}")
+            break
+            
+        else:
+            print("Digite apenas os numeros das opções de escolhas listadas!")
+            time.sleep(1)
     
     
     
@@ -167,16 +141,41 @@ def conexao_rede():
             print("Dica: Execute o painel como Administrador.")
     else:
         print(f"\n{Fore.RED}ERRO: Opção inválida. Escolha 1, 2 ou 3.{Style.RESET_ALL}")
+        
+
+def obter_memorias_rss(processo):
+    
+    return processo.info['memory_info'].rss        
+        
+def exibir_processos():
+    
+    limite_atencao = 200
+    limite_ciritco = 300
+    
+    
+    listas_processos = list(psutil.process_iter(['pid','name', 'memory_info']))
+    processos_ordenados = sorted(listas_processos, key=obter_memorias_rss, reverse=False)
+
+    for item in processos_ordenados:
+        try:
+            memoria_mb = item.info['memory_info'].rss / (1024 * 1024)
             
-def visualizar_colunas():
- ...
+            if memoria_mb >=limite_ciritco:
+                cor_status = Fore.RED 
+            elif memoria_mb >=limite_atencao:
+               cor_status = Fore.YELLOW 
+                
+            else:
+               cor_status = Fore.GREEN 
+            
+            print(f"nome: {Fore.GREEN}{item.info['name']:<30}{Style.RESET_ALL}  |  memoria: {cor_status}{memoria_mb:.2f}{Style.RESET_ALL}")
+            
+        except ValueError as e:
+            print(f"Ocorreu um Erro: {e}")
+            
 
     #FUNÇÃO 7  
 def finalizar_tarefa():
-    
-
-    limite_atencao = 100
-    limite_critico = 500
     limpar_tela()
     processos_apagados = 0
     processos_nao_apagados = 0
@@ -194,28 +193,13 @@ def finalizar_tarefa():
         
     if escolha == 's':
             print("\nExibindo processos...")
-            
-            for i in psutil.process_iter(['pid', 'name', 'memory_info']):
-                try:
-                    processos = i.info['name']
-                    info_memoria = i.info['memory_info']
-                    memoria_usada_mb = info_memoria.rss / (1024 * 1024)
+            exibir_processos()             
                     
-                    if memoria_usada_mb >= limite_critico:
-                        cor_status = Fore.RED
-                    elif memoria_usada_mb >= limite_atencao:
-                        cor_status = Fore.YELLOW
-                    else:
-                        cor_status = Fore.GREEN
-                    
-                    
-                    print(f'Processo Ativado: {Fore.CYAN +processos} {Fore.WHITE + "|"} {Fore.LIGHTBLUE_EX +"Memória Usada:"}{cor_status} {memoria_usada_mb:.2f} MB')
-                    print("\n" + "="*50)
-                except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-                    pass
+            print("\n" + "="*50)
+
 
                 
-    print(f"{Fore.YELLOW +"CUIDADO! - "} {Fore.WHITE +"Não finalize processos que você não conheça"}\n")
+    print(f"{Fore.YELLOW +"CUIDADO! - "} {"Não finalize processos que você não conheça"}\n")
     nome_do_processo = input("Digite o nome do processo (com o '.exe' no final) que quer encerrar (ou deixe em branco para cancelar): ")
     
     if not nome_do_processo:
@@ -237,10 +221,15 @@ def finalizar_tarefa():
     
     print(f"\n{Fore.GREEN}{processos_apagados} - processo(s) finalizado(s).")
     print(f"{Fore.RED}{processos_nao_apagados} - processo(s) não puderam ser finalizados (protegidos).")
+    input("Aprete ENTER para voltar: ")
     
 
-                  
-    #FUNÇÃO 10
+    #FUNÇÃO 8
+def limpar_cache_windows():
+    print(f"{Fore.GREEN}Iniciando a limpeza de cache e atualizações...")
+    time.sleep(1)
+    print(is_admin())
+    
 
 def limpar_pasta_temp():
     
@@ -273,7 +262,7 @@ def limpar_pasta_temp():
         try:
              if item.is_file() or item.is_symlink():
                  os.remove(item.path)
-                 time.sleep(0.2)
+                 time.sleep(0.02)
                  arquivos_apagados += 1
                  print(f"  {Fore.CYAN}Arquivo apagado:{Style.RESET_ALL} {item.name}")
              elif item.is_dir():
@@ -315,7 +304,51 @@ def verificar_plano_energia():
             
         else:
             print(f"Status: {Fore.CYAN}Outro plano de energia está ativo.{Style.RESET_ALL}")
+
     
     except (FileNotFoundError, subprocess.CalledProcessError) as e:
          print(f"{Fore.RED}Não foi possível verificar o plano de energia. Erro: {e}{Style.RESET_ALL}")
          print(f"{Fore.YELLOW}Isso pode acontecer se o script não for executado como Administrador.{Style.RESET_ALL}")
+    input(Fore.YELLOW + "\nAperte ENTER para voltar: ")
+
+
+GUID_ALTO_DESEMPENHO = "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"
+GUID_EQUILIBRADO = "381b4222-f694-41f0-9685-ff5bb260df2e"
+GUID_ECONOMIA = "a1841308-3541-4fab-bc81-f71556f20b4a"
+
+     
+        #FUNÇÃO 2
+def ativar_modo_desempenho():
+
+    limpar_tela()
+    print("Bem vindo a Alteração de Modo de Energia!")
+    time.sleep(1)
+    print("\n[1] - Alto Desempenho")
+    print("[2] - Equilibrado")
+    print("[3] - Economia de Energia")
+    print("[4] - voltar para o menu Principal\n")
+    print("Para verificar em que plano de energia seu computador está, experimente a opção 11!\n")
+    
+    choice = int(input("Escolha o modo de energia que vc deseja: "))
+    if choice == 1:
+        os.system(f"powercfg /setactive {GUID_ALTO_DESEMPENHO}")
+        print(Fore.GREEN + "Modo Desempenho Ativado!")
+        
+    elif choice == 2:
+        os.system(f"powercfg /setactive {GUID_EQUILIBRADO}")
+        print(Fore.YELLOW +"Modo Equilibrado Ativado!") 
+    
+    elif choice == 3:
+        os.system(f"powercfg /setactive {GUID_ECONOMIA}")
+        print(Fore.RED +"Modo economia Ativado!")
+    
+    elif choice == 4:
+        limpar_tela()
+        print("")
+    else:
+        print("Numero Invalido")
+
+      
+        
+
+    
