@@ -9,7 +9,9 @@ import tempfile
 import psutil
 import ctypes
 import winshell
-import itertools
+import winreg
+
+
 
 def is_admin():
     """Verifica se o script está rodando em modo administrador."""
@@ -25,71 +27,145 @@ def loading():
     for i in tqdm(range(100), desc="Otimizando Sistema"):
         time.sleep(0.0001)
          
-    
-    #FUNÇÃO 1   
+         
+         
+    #FUNÇÃO 1     
+def desabilitar_Animações_UserPreferencesMask():
+    try:
+         #desabilitar UserPreferencesMask
+        print("Iniciando Alterações em: HKEY_CURRENT_USER\\Control Panel\\Desktop")
+        time.sleep(1)
+
+        chave = winreg.OpenKey(winreg.HKEY_CURRENT_USER,r"Control Panel\Desktop", 0,winreg.KEY_SET_VALUE)
+        winreg.SetValueEx(chave, "UserPreferencesMask", 0, winreg.REG_BINARY, b'\x90\x12\x03\x80\x10\x00\x00\x00')
+        codigo_binario = winreg.QueryInfoKey(chave, "UserPreferencesMask")
+        print(f"alterado! código Binario Atual: {codigo_binario} ")
+        winreg.CloseKey(chave)
+
+        time.sleep(1)
+        subprocess.run(["taskkill", "/f", "/im", "explorer.exe"], check=True, shell=True)
+        subprocess.run(["start", "explorer"], check=True, shell=True)
+
+        print("✔ Efeitos visuais desativados (melhor desempenho).")
+        print("⚠️ Reinicie o Explorer ou o PC para aplicar totalmente.")
+
+    except Exception as e:
+        print(f"❌ Erro: {e}")
+
+
+def habilitar_Animações_UserPreferencesMask():
+    try:
+        #Habilitar UserPreferencesMask
+        print("Iniciando Alterações em: HKEY_CURRENT_USER\\Control Panel\\Desktop")
+        time.sleep(1)
+
+        chave = winreg.OpenKey(winreg.HKEY_CURRENT_USER,r"Control Panel\Desktop", 0,winreg.KEY_SET_VALUE)
+        winreg.SetValueEx(chave, "UserPreferencesMask", 0, winreg.REG_BINARY, b'\x9e>\x07\x80\x12\x00\x00\x00')
+        valor, codigo_binario = winreg.QueryInfoKey(chave, "UserPreferencesMask", 0 , )
+        print(f"alterado! código Binario Atual: {codigo_binario} ")
+        winreg.CloseKey(chave)
+
+        time.sleep(1)
+        subprocess.run(["taskkill", "/f", "/im", "explorer.exe"], check=True, shell=True)
+        subprocess.run(["start", "explorer"], check=True, shell=True)
+
+        print("✔ Efeitos visuais desativados (melhor desempenho).")
+        print("⚠️ Reinicie o Explorer ou o PC para aplicar totalmente.")
+
+    except Exception as e:
+        print(f"❌ Erro: {e}")
+        
+        
+def interface_animacoes_windows():
+    subprocess.run(["SystemPropertiesPerformance"], shell=True)
+
+
 def efeitos_visuais():
-    CODIGO_EFEITOS_VISUAIS = 0x103F
-    FLAG_SALVAR_PERFIL = 0x01
-    FLAG_AVISAR_SISTEMA = 0x02
-    
-    
     limpar_tela()
     print(Fore.GREEN +"Iniciando otimização dos efeitos visuais....")
     time.sleep(2)
     
-    limpar_tela()
     while True:
+        limpar_tela()
         print(Fore.GREEN +"""
               
-                                                <---- Escolha uma das opções abaixo ------>
+                                                     <---- Escolha uma das opções abaixo ------>
                                                 
-                                                ==========================================
-                                                | [1] - Habilitar animações              |
-                                                | [2] - Desabilitar animações            |
-                                                | [3] - Voltar                           |
-                                                ==========================================   
+                                                ====================================================
+                                                | [1] - desabilitar Animações UserPreferencesMask  |
+                                                | [2] - Habilitar Animações UserPreferencesMask    |
+                                                | [3] - Abrir Interface de animações do Windows    |
+                                                | [4] - Voltar                                     | 
+                                                ====================================================
               
               
               """)
-        escolha = None
         
         try:
-            escolha = int(input(Fore.CYAN + "Escolha uma opção: "))
+            escolha = int(input(f"{Fore.CYAN}Escolha uma opção: {Style.RESET_ALL}"))
             
-        except ValueError:
-            
+        except ValueError:     
             print("Erro: Por favor, digite apenas um número.")
             continue
         
         if escolha == 1:
-            
-            try:
-                ctypes.windll.user32.SystemParametersInfow(CODIGO_EFEITOS_VISUAIS 1, None, FLAG_SALVAR_PERFIL | FLAG_AVISAR_SISTEMA)
-                print("animações habilitadas!")
-                
-            except Exception as e:
-                print(f"Houve um erro ao habilitar animações {e}")
-                
+            print("INCIANDO PROCESSO.")
+            time.sleep(0.5)
+            desabilitar_Animações_UserPreferencesMask()
+            input("sss")
+            time.sleep(1)
         elif escolha == 2:
-            try:
-                ctypes.windll.user32.SystemParametersInfow(CODIGO_EFEITOS_VISUAIS, 0, None, FLAG_SALVAR_PERFIL | FLAG_AVISAR_SISTEMA)
-                print("Animações desabilitadas!")
-            except Exception as e:
-                print(f"Houve um erro ao desabilitar animações {e}")
-        
+            print("INCIANDO PROCESSO.")
+            time.sleep(0.5)
+            habilitar_Animações_UserPreferencesMask()
+            time.sleep(1)
         elif escolha == 3:
+            print("Abrindo interface...")
+            time.sleep(0.5)
+            print("na interface você pode alterar o modo de animações do windows! Existem 3 opções")
+            time.sleep(0.5)
+            print("Para melhor desempenho escolha (melhor desempenho) ")
+            time.sleep(0.7)
+            interface_animacoes_windows()
+
+        elif escolha == 4:
             print("Voltando para o menu...")
             time.sleep(0.7)
-            break
-        
         else:
             print("Digite apenas os números Válidos!")
             continue
                 
-            
+    
+    
+def ativar_modo_desempenho():
+
+    limpar_tela()
+    print("Bem vindo a Alteração de Modo de Energia!")
+    time.sleep(1)
+    print("\n[1] - Alto Desempenho")
+    print("[2] - Equilibrado")
+    print("[3] - Economia de Energia")
+    print("[4] - voltar para o menu Principal\n")
+    print("Para verificar em que plano de energia seu computador está, experimente a opção 11!\n")
+    
+    choice = int(input("Escolha o modo de energia que vc deseja: "))
+    if choice == 1:
+        os.system(f"powercfg /setactive {GUID_ALTO_DESEMPENHO}")
+        print(Fore.GREEN + "Modo Desempenho Ativado!")
         
+    elif choice == 2:
+        os.system(f"powercfg /setactive {GUID_EQUILIBRADO}")
+        print(Fore.YELLOW +"Modo Equilibrado Ativado!") 
     
+    elif choice == 3:
+        os.system(f"powercfg /setactive {GUID_ECONOMIA}")
+        print(Fore.RED +"Modo economia Ativado!")
     
+    elif choice == 4:
+        limpar_tela()
+        print("")
+    else:
+        print("Numero Invalido")
         
         #FUNÇÃO 3
 def limpeza_disco():
@@ -296,6 +372,7 @@ def limpar_cache_windows():
 
 def limpar_pasta_temp():
     
+    
     arquivos_apagados = 0
     pastas_apagadas = 0
     erros = 0
@@ -339,7 +416,34 @@ def limpar_pasta_temp():
     print(f"\n{Fore.CYAN} {arquivos_apagados} - Arquivo(s) apagado(s) com sucesso ")
     print(f"\n {Fore.CYAN}{pastas_apagadas} - Pasta(s) apagada(s) com sucesso ")
     print(f"\n {Fore.RED}{erros} Pastas e arquivos que não foram possiveis deletar ")
+    
+    
+    
+    #FUNÇÃO 9 
+def ver_uso_disco():
+    print(f"{Fore.GREEN}Iniciando Verificação de Armazenamento dos seus Discos...")
+    time.sleep(1)
+    limpar_tela()
+    print("----------SUAS PARTIÇÕES---------- ")
 
+    particoes = psutil.disk_partitions()
+    
+    for i in particoes:
+        try:
+            print("="*50)
+            uso = psutil.disk_usage(i.mountpoint)
+            print(f"Unidade: {i.device}")
+            print(f"Total: {uso.total/(1024**3):.2f} GB ")
+            print(f"Usando: {uso.used/(1024**3):.2f} GB ")
+            print(f"Livre: {uso.free/(1024**3):.2f} GB",)
+            print(f"Porcentual do Disco: {uso.percent}%")
+             
+        except Exception as e:
+             print(f"Ocorreu um erro ao buscar partições! : {e}")
+             
+    input("Aperte ENTERww para voltar para o Menu. ")
+      
+  
     #FUNÇÃO 11
 def verificar_plano_energia():
     limpar_tela() 
@@ -380,36 +484,7 @@ GUID_EQUILIBRADO = "381b4222-f694-41f0-9685-ff5bb260df2e"
 GUID_ECONOMIA = "a1841308-3541-4fab-bc81-f71556f20b4a"
 
      
-        #FUNÇÃO 2
-def ativar_modo_desempenho():
 
-    limpar_tela()
-    print("Bem vindo a Alteração de Modo de Energia!")
-    time.sleep(1)
-    print("\n[1] - Alto Desempenho")
-    print("[2] - Equilibrado")
-    print("[3] - Economia de Energia")
-    print("[4] - voltar para o menu Principal\n")
-    print("Para verificar em que plano de energia seu computador está, experimente a opção 11!\n")
-    
-    choice = int(input("Escolha o modo de energia que vc deseja: "))
-    if choice == 1:
-        os.system(f"powercfg /setactive {GUID_ALTO_DESEMPENHO}")
-        print(Fore.GREEN + "Modo Desempenho Ativado!")
-        
-    elif choice == 2:
-        os.system(f"powercfg /setactive {GUID_EQUILIBRADO}")
-        print(Fore.YELLOW +"Modo Equilibrado Ativado!") 
-    
-    elif choice == 3:
-        os.system(f"powercfg /setactive {GUID_ECONOMIA}")
-        print(Fore.RED +"Modo economia Ativado!")
-    
-    elif choice == 4:
-        limpar_tela()
-        print("")
-    else:
-        print("Numero Invalido")
 
       
         

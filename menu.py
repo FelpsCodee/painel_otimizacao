@@ -6,7 +6,6 @@ import colorama
 from colorama import Fore, Back, Style, init
 import shutil
 import functions
-import subprocess
 
 
 
@@ -58,17 +57,19 @@ def logo():
     """)
     
 acoes = {
+    1: functions.efeitos_visuais,
     2: functions.ativar_modo_desempenho,
     3: functions.limpeza_disco,
     4: functions.conexao_rede,
     7: functions.finalizar_tarefa,
     8: functions.limpar_cache_windows,
+    9: functions.ver_uso_disco,
     11: functions.verificar_plano_energia
     # ... etc ...
    }
     
 opcoes = {
-    1: "Otimização de memória ",
+    1: "Desativar Animações/Efeitos visuais ",
     2: "Ativar Modo Desempenho Máximo ",
     3: "Limpeza de Disco Avançada  ",
     4: "Reparar Conexão de Rede ",
