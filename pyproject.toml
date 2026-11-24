@@ -1,0 +1,12 @@
+[project]
+name = "pc-optimizer-pro"
+version = "2.0.0"
+description = "Painel de otimização para Windows com ferramentas de limpeza, diagnóstico e performance."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+[project.urls]
+Homepage = "https://github.com/FelpsCodee/painel_otimizacao"
+Repository = "https://github.com/FelpsCodee/painel_otimizacao"
+Issues = "https://github.com/FelpsCodee/painel_otimizacao/issues"
